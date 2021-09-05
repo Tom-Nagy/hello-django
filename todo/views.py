@@ -16,7 +16,8 @@ def get_todo_list(request):
 
 def add_item(request):
     if request.method == 'POST':
-        # Use the form template to populate the form automatically with the request.post method
+        # Use the form template to populate the form automatically
+        # with the request.post method
         form = ItemForm(request.POST)
         # Check the form validity
         if form.is_valid():
