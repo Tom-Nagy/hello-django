@@ -21,7 +21,7 @@ def add_item(request):
         # Check the form validity
         if form.is_valid():
             # save the form
-            form.save()
+            form.save() # corresp to Item.objects.create(name=name, done=done)
             return redirect('get_todo_list')
 
         # Get the forms info
