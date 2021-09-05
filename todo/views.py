@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from .models import Item
+from .forms import ItemForm
 
 
 # Create your views here.
 def get_todo_list(request):
     items = Item.objects.all()
+    # context dic is the way we pas var to the template
+    # The key should correspond to the var we want to pass
     context = {
         'items': items
     }
@@ -13,12 +16,23 @@ def get_todo_list(request):
 
 def add_item(request):
     if request.method == 'POST':
+        # Use the form template to populate the form automatically with the request.post method
+        form = ItemForm(request.POST)
+        # Check the form validity
+        if form.is_valid():
+            # save the form
+            form.save()
+            return redirect('get_todo_list')
+
         # Get the forms info
-        name = request.POST.get('item_name')
-        done = 'done' in request.POST
+        # name = request.POST.get('item_name')
+        # done = 'done' in request.POST
 
         # Create an Item  in the db
-        Item.objects.create(name=name, done=done)
+        # Item.objects.create(name=name, done=done)
 
-        return redirect('get_todo_list')
-    return render(request, 'todo/add_item.html')
+    form = ItemForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'todo/add_item.html', context)
